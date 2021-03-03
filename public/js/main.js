@@ -1,7 +1,7 @@
 
 $(function () {
 
-    let socket = io.connect('http://localhost:8080');
+    let socket = io.connect('');
     let message = $("#message");
     let send_message = $("#send_message");
     let chatroom = $("#chatroom");
@@ -9,7 +9,6 @@ $(function () {
     let usersList = $("#users-list");
     let nickName = $("#nickname-input");
     let send_nickName = $("#send_nickName");
-
     send_message.click(function () {
         socket.emit('new_message', { message: message.val() })
     });
@@ -70,6 +69,17 @@ $(function () {
     socket.on('typing', (data) => {
         feedback.html("<p><i>" + data.username + " is typing a message..." + "</i></p>")
     });
+
+    socket.on('arrayProducts', function(arrayProducts) {
+        console.log(arrayProducts);
+        var theTemplateScript = $("#products-template").html();
+         var theTemplate = Handlebars.compile(theTemplateScript);
+         var theTemplateScript = $("#products-template").html();
+         var theTemplate = Handlebars.compile(theTemplateScript);
+         products={"products":arrayProducts}
+         var theCompiledHtml = theTemplate(products)
+         $('.content-placeholder').html(theCompiledHtml);
+       });
 });
 
 const keepTheChatRoomToTheBottom = () => {
